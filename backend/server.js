@@ -3,10 +3,11 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const { get } = require('mongoose')
+const mongoose = require('mongoose')
 require('dotenv').config()
 
-// _______________________ app _______________________
+// _______________________ config _______________________
+
 const app = express()
 app.use(morgan('dev'))
 app.use(bodyParser.json())
@@ -16,12 +17,21 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 // _______________________ routes _______________________
-app.get('/api', (req, res) => {
-  res.json({ time: Date().toString() })
-})
+const blogRoutes = require('./routes/blog')
+app.use('/api', blogRoutes)
 
 // ______________________________________________________
-const port = process.env.PORT || 8000
-app.listen(port, () => {
-  console.log(`Server started on ${port}`)
-})
+
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    const port = process.env.PORT || 8000
+    app.listen(port, () => {
+      console.log(`Server started on ${port}`)
+    })
+  })
