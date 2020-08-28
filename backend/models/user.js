@@ -51,11 +51,7 @@ userSchema.virtual('password').set(function (password) {
 
 userSchema.methods = {
   isAuthenticate: function (plainText) {
-    if (this.hashed_password) {
-      return this.encryptPassword(plainText) === this.hashed_password
-    }
-
-    return false
+    return this.encryptPassword(plainText) === this.hashed_password
   },
 
   encryptPassword: function (password) {

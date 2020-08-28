@@ -10,13 +10,15 @@ const app = express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({ origin: `${process.env.CLIENT_URL}` }))
+app.use(cors())
+app.use(require('./middlewares/responses'))
 
 // _______________________ routes _______________________
 app.use('/api', require('./routes/blog'))
 app.use('/api', require('./routes/auth'))
 
 // _______________________ start ________________________
+const port = process.env.PORT || 8000
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -25,10 +27,7 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    const port = process.env.PORT || 8000
-    app.listen(port, () => {
-      console.log(`Server started on ${port}`)
-    })
+    app.listen(port, () => console.log(`Server started on ${port}`))
   })
 
 app.use(function (err, req, res, next) {

@@ -1,6 +1,12 @@
-exports.signup = (req, res) => {
+const User = require('../models/user')
+
+exports.signup = async (req, res) => {
   const { name, email, password } = req.body
-  res.json({
-    user: { name, email, password },
-  })
+
+  let user = await User.findOne2({ email: email })
+  if (user) {
+    res.fail('Email is taken')
+  }
+
+  res.ok(user)
 }
