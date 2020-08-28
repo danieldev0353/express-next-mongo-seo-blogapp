@@ -1,27 +1,24 @@
 const express = require('express')
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
 // _______________________ config _______________________
-
 const app = express()
 app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(cookieParser())
 if (process.env.NODE_ENV == 'development') {
   app.use(cors({ origin: `${process.env.CLIENT_URL}` }))
 }
 
 // _______________________ routes _______________________
-const blogRoutes = require('./routes/blog')
-app.use('/api', blogRoutes)
+app.use('/api', require('./routes/blog'))
+app.use('/api', require('./routes/auth'))
 
-// ______________________________________________________
-
+// _______________________ start ________________________
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -35,3 +32,9 @@ mongoose
       console.log(`Server started on ${port}`)
     })
   })
+
+app.use(function (err, req, res, next) {
+  res.status(500).json({
+    error: err.message,
+  })
+})
