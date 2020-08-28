@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      trim: true,
       required: true,
       max: 32,
       unique: true,
@@ -14,13 +13,11 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      trim: true,
       required: true,
       max: 32,
     },
     email: {
       type: String,
-      trim: true,
       required: true,
       unique: true,
       lowercase: true,
@@ -33,13 +30,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    salt: String,
-    about: {
-      type: String,
-    },
     role: {
       type: Number,
-      trim: true,
     },
     photo: {
       data: Buffer,
@@ -52,5 +44,29 @@ const userSchema = new mongoose.Schema(
   },
   { timestamp: true }
 )
+
+userSchema.virtual('password').set(function (password) {
+  this.hashed_password = this.encryptPassword(password)
+})
+
+userSchema.methods = {
+  isAuthenticate: function (plainText) {
+    if (this.hashed_password) {
+      return this.encryptPassword(plainText) === this.hashed_password
+    }
+
+    return false
+  },
+
+  encryptPassword: function (password) {
+    if (!password) return ''
+    try {
+      const salt = process.env.SALT
+      return crypto.createHmac('sha1', salt).update(password).digest('hex')
+    } catch (err) {
+      return ''
+    }
+  },
+}
 
 module.exports = mongoose.model('User', userSchema)
