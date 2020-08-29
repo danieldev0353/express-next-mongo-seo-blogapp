@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const crypto = require('crypto')
+const cryptoJS = require('crypto-js')
 
 const userSchema = new mongoose.Schema(
   {
@@ -58,8 +58,9 @@ userSchema.methods = {
     if (!password) return ''
     try {
       const salt = process.env.SALT
-      return crypto.createHmac('sha1', salt).update(password).digest('hex')
+      return cryptoJS.HmacSHA1(password, salt).toString()
     } catch (err) {
+      console.log(err)
       return ''
     }
   },
