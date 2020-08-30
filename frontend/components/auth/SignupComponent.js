@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import axios from './../../axios.config'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: 'Tom ',
+    email: 'tom@mail.com',
+    password: '123456789',
     error: '',
     loading: false,
     message: '',
@@ -15,7 +16,27 @@ const SignupComponent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.table({ name, email, password, error, loading, message, showForm })
+    setValues({ ...values, loading: true, error: false })
+    const user = { name, email, password }
+
+    axios
+      .post('/signup', user)
+      .then(({ data }) => {
+        setValues({
+          ...values,
+          name: '',
+          email: '',
+          password: '',
+          error: '',
+          loading: false,
+          message: data.message,
+          showForm: false,
+        })
+      })
+      .catch((e) => {
+        console.log(e)
+        setValues({ ...values, error: e.response?.data?.error, loading: false })
+      })
   }
 
   const handleChange = (name) => (e) => {
