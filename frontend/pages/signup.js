@@ -1,15 +1,14 @@
-import Layout from '../components/Layout';
-import Link from 'next/link';
+import Layout from '../components/Layout'
+import Link from 'next/link'
+import SignupComponent from '../components/auth/SignupComponent'
 
 const Signup = () => {
-    return (
-        <Layout>
-            <h2>Signup page</h2>
-            <Link href="/">
-                <a>Home</a>
-            </Link>
-        </Layout>
-    );
-};
+  return (
+    <Layout>
+      <h2>Signup page</h2>
+      <SignupComponent />
+    </Layout>
+  )
+}
 
-export default Signup;
+export default Signup
