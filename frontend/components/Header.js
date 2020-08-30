@@ -1,3 +1,4 @@
+import getConfig from 'next/config'
 import { useState } from 'react'
 import {
   Collapse,
@@ -9,6 +10,8 @@ import {
   NavLink,
 } from 'reactstrap'
 
+const { publicRuntimeConfig } = getConfig()
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -19,7 +22,7 @@ const Header = () => {
   return (
     <div>
       <Navbar color='light' light expand='md'>
-        <NavbarBrand href='/'>reactstrap</NavbarBrand>
+        <NavbarBrand href='/'>{publicRuntimeConfig.appName}</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='ml-auto' navbar>
