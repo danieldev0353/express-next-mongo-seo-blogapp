@@ -1,4 +1,5 @@
 import getConfig from 'next/config'
+import Link from 'next/link'
 import { useState } from 'react'
 import {
   Collapse,
@@ -22,17 +23,23 @@ const Header = () => {
   return (
     <div>
       <Navbar color='light' light expand='md'>
-        <NavbarBrand href='/'>{publicRuntimeConfig.appName}</NavbarBrand>
+        <Link href='/'>
+          <NavLink className='font-weight-bold'>
+            {publicRuntimeConfig.APP_NAME}
+          </NavLink>
+        </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='ml-auto' navbar>
             <NavItem>
-              <NavLink href='/components/'>Components</NavLink>
+              <Link href='/signin'>
+                <NavLink>Signin</NavLink>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href='https://github.com/reactstrap/reactstrap'>
-                GitHub
-              </NavLink>
+              <Link href='/signup'>
+                <NavLink>Signup</NavLink>
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>
