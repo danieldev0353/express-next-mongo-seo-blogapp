@@ -28,7 +28,11 @@ const SignupComponent = () => {
       .post('/signin', user)
       .then(({ data }) => {
         signin(data, () => {
-          Router.push(`/`)
+          if (isAuth()?.role === 1) {
+            Router.push(`/admin`)
+          } else {
+            Router.push(`/user`)
+          }
         })
       })
       .catch((e) => {
