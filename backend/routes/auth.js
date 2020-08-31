@@ -1,18 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const rescue = require('express-rescue')
-
-// _______________________ controllers ________________________
 const { signup, signin, signout } = require('../controllers/auth')
 
-// _______________________ validators ________________________
+//_________________________________________________________
 const {
   userSignupValidator,
   userSigninValidator,
 } = require('../validators/auth')
 const { runValidation } = require('../validators/index')
 
-// _______________________ routes ________________________
+//_________________________________________________________
 router.post('/signup', userSignupValidator, runValidation, rescue(signup))
 router.post('/signin', userSigninValidator, runValidation, rescue(signin))
 router.get('/signout', signout)
