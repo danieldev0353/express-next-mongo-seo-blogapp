@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import axios from './../../axios.config'
+import Router from 'next/router'
+import { authenticate } from '../../actions/auth'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
-    name: '',
     email: 'tom@mail.com',
     password: '123456789',
     error: '',
@@ -12,29 +13,22 @@ const SignupComponent = () => {
     showForm: true,
   })
 
-  const { name, email, password, error, loading, message, showForm } = values
+  const { email, password, error, loading, message, showForm } = values
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setValues({ ...values, loading: true, error: false })
-    const user = { name, email, password }
+    const user = { email, password }
 
     axios
-      .post('/signup', user)
+      .post('/signin', user)
       .then(({ data }) => {
-        setValues({
-          ...values,
-          name: '',
-          email: '',
-          password: '',
-          error: '',
-          loading: false,
-          message: data.message,
-          showForm: false,
+        authenticate(data, () => {
+          Router.push(`/`)
         })
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
         setValues({ ...values, error: e.response?.data?.error, loading: false })
       })
   }
@@ -49,16 +43,6 @@ const SignupComponent = () => {
 
   const signupForm = () => (
     <form onSubmit={handleSubmit}>
-      <div className='form-group'>
-        <input
-          value={name}
-          onChange={handleChange('name')}
-          type='text'
-          className='form-control'
-          placeholder='Type your name'
-        />
-      </div>
-
       <div className='form-group'>
         <input
           value={email}
@@ -81,7 +65,7 @@ const SignupComponent = () => {
 
       <div>
         <button disabled={loading} className='btn btn-primary'>
-          Signup
+          Signin
         </button>
       </div>
     </form>
