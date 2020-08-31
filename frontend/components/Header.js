@@ -33,7 +33,7 @@ const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='ml-auto' navbar>
-            {!isAuth() && (
+            {!isAuth() ? (
               <>
                 <NavItem>
                   <Link href='/signin'>
@@ -46,11 +46,9 @@ const Header = () => {
                   </Link>
                 </NavItem>
               </>
-            )}
-            {isAuth() && (
+            ) : (
               <NavItem>
                 <NavLink
-                  style={{ cursor: 'pointer' }}
                   onClick={() => signout(() => Router.replace(`/signin`))}
                 >
                   Signout
