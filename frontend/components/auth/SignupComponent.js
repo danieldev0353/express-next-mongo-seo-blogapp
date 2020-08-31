@@ -3,7 +3,7 @@ import axios from './../../axios.config'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
-    name: 'Tom ',
+    name: '',
     email: 'tom@mail.com',
     password: '123456789',
     error: '',
@@ -43,7 +43,11 @@ const SignupComponent = () => {
     setValues({ ...values, error: false, [name]: e.target.value })
   }
 
-  return (
+  const showLoading = () => <div className='alert alert-info'>Loading...</div>
+  const showError = () => <div className='alert alert-danger'>{error}</div>
+  const showMessage = () => <div className='alert alert-info'>{message}</div>
+
+  const signupForm = () => (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
         <input
@@ -79,6 +83,15 @@ const SignupComponent = () => {
         <button className='btn btn-primary'>Signup</button>
       </div>
     </form>
+  )
+
+  return (
+    <>
+      {loading && showLoading()}
+      {message && showMessage()}
+      {error && showError()}
+      {showForm && signupForm()}
+    </>
   )
 }
 
