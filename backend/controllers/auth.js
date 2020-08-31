@@ -1,7 +1,6 @@
 const User = require('../models/user')
 const shortId = require('shortid')
 const jwt = require('jsonwebtoken')
-const jwtMiddleware = require('express-jwt')
 
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body
@@ -44,8 +43,3 @@ exports.signout = (req, res) => {
   res.clearCookie('token')
   res.ok('Signout success')
 }
-
-exports.requireSignin = jwtMiddleware({
-  secret: process.env.JWT_SECRET,
-  algorithms: ['HS256'],
-})
