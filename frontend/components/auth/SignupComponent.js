@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import axios from './../../axios.config'
+import { useState, useEffect } from 'react'
+import axios from '../../axios.config'
+import Router from 'next/router'
+import { isAuth } from '../../actions/auth'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -13,6 +15,10 @@ const SignupComponent = () => {
   })
 
   const { name, email, password, error, loading, message, showForm } = values
+
+  useEffect(() => {
+    isAuth() && Router.push(`/`)
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
