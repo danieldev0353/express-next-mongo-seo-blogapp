@@ -1,4 +1,5 @@
 const { check } = require('express-validator')
+const { runValidation } = require('../validators/index')
 
 exports.userSignupValidator = [
   check('name').trim().not().isEmpty().withMessage('Name is required'),
@@ -6,6 +7,7 @@ exports.userSignupValidator = [
   check('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
+  runValidation,
 ]
 
 exports.userSigninValidator = [
@@ -13,4 +15,5 @@ exports.userSigninValidator = [
   check('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
+  runValidation,
 ]

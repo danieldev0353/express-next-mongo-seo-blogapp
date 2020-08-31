@@ -6,6 +6,6 @@ const { read } = require('../controllers/user')
 const { requireSignin, authMiddleware } = require('../middlewares/auth')
 
 //_________________________________________________________
-router.get('/profile', requireSignin, rescue(authMiddleware), rescue(read))
+router.get('/profile', requireSignin, authMiddleware, rescue(read))
 
 module.exports = router

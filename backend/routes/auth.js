@@ -8,11 +8,10 @@ const {
   userSignupValidator,
   userSigninValidator,
 } = require('../validators/auth')
-const { runValidation } = require('../validators/index')
 
 //_________________________________________________________
-router.post('/signup', userSignupValidator, runValidation, rescue(signup))
-router.post('/signin', userSigninValidator, runValidation, rescue(signin))
+router.post('/signup', userSignupValidator, rescue(signup))
+router.post('/signin', userSigninValidator, rescue(signin))
 router.get('/signout', signout)
 
 module.exports = router
