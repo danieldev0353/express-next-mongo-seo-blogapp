@@ -18,7 +18,7 @@ export const removeCookie = (key) => {
 
 export const getCookie = (key) => {
   if (process.browser) {
-    cookie.get(key)
+    return cookie.get(key)
   }
 }
 
@@ -34,9 +34,15 @@ export const removeLocalStorage = (key) => {
   }
 }
 
-export const authenticate = ({ data }, next) => {
+export const signin = ({ data }, next) => {
   setCookie('token', data.token)
   setLocalStorage('user', data.user)
+  next()
+}
+
+export const signout = (next) => {
+  removeCookie('token')
+  removeLocalStorage('user')
   next()
 }
 

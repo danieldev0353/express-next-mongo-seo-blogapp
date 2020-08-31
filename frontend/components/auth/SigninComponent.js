@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from './../../axios.config'
 import Router from 'next/router'
-import { authenticate } from '../../actions/auth'
+import { signin } from '../../actions/auth'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -23,7 +23,7 @@ const SignupComponent = () => {
     axios
       .post('/signin', user)
       .then(({ data }) => {
-        authenticate(data, () => {
+        signin(data, () => {
           Router.push(`/`)
         })
       })
