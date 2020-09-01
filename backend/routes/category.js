@@ -5,12 +5,11 @@ const { create, list, read, remove } = require('../controllers/category')
 
 //_________________________________________________________
 const { categoryCreateValidator } = require('../validators/category')
-const { requireSignin, adminMiddleware } = require('../middlewares/auth')
+const { adminMiddleware } = require('../middlewares/auth')
 
 //_________________________________________________________
 router.post(
   '/category',
-  requireSignin,
   adminMiddleware,
   categoryCreateValidator,
   rescue(create)
@@ -18,6 +17,6 @@ router.post(
 
 router.get('/categories', rescue(list))
 router.get('/category/:slug', rescue(read))
-router.delete('/category/:slug', requireSignin, adminMiddleware, rescue(remove))
+router.delete('/category/:slug', adminMiddleware, rescue(remove))
 
 module.exports = router

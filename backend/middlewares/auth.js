@@ -1,33 +1,43 @@
 const expressJwt = require('express-jwt')
 const User = require('../models/user')
 
-exports.requireSignin = expressJwt({
+const requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
   algorithms: ['HS256'],
 })
 
-exports.authMiddleware = (req, res, next) => {
-  User.findById({ _id: req.user._id }).exec((err, user) => {
-    if (err || !user) {
-      return res.fail('User not found')
-    }
+exports.authMiddleware = [
+  requireSignin,
+  (req, res, next) => {
+    User.findById({ _id: req.user._id })
+      .select('-hashed_password')
+      .exec((err, user) => {
+        if (err || !user) {
+          return res.fail('User not found')
+        }
 
-    req.profile = user
-    next()
-  })
-}
+        req.profile = user
+        next()
+      })
+  },
+]
 
-exports.adminMiddleware = (req, res, next) => {
-  User.findById({ _id: req.user._id }).exec((err, user) => {
-    if (err || !user) {
-      return res.fail('User not found')
-    }
+exports.adminMiddleware = [
+  requireSignin,
+  (req, res, next) => {
+    User.findById({ _id: req.user._id })
+      .select('-hashed_password')
+      .exec((err, user) => {
+        if (err || !user) {
+          return res.fail('User not found')
+        }
 
-    if (user.role !== 1) {
-      return res.fail('Admin resource. Access denied')
-    }
+        if (user.role !== 1) {
+          return res.fail('Admin resource. Access denied')
+        }
 
-    req.profile = user
-    next()
-  })
-}
+        req.profile = user
+        next()
+      })
+  },
+]

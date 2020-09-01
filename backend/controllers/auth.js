@@ -29,17 +29,15 @@ exports.signin = async (req, res) => {
   }
 
   let token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: '1d',
+    expiresIn: '3d',
   })
 
   {
-    res.cookie('token', token, { expiresIn: '1d' })
     let { _id, username, name, email, role } = user
     res.ok('Signin', { token, user: { _id, username, name, email, role } })
   }
 }
 
 exports.signout = (req, res) => {
-  res.clearCookie('token')
   res.ok('Signout success')
 }
