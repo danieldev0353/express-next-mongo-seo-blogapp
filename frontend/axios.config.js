@@ -1,6 +1,5 @@
 import getConfig from 'next/config'
 import axios from 'axios'
-import NProgress from 'nprogress'
 
 const { publicRuntimeConfig } = getConfig()
 const instance = axios.create({
