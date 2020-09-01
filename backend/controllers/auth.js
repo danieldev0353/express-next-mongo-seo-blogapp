@@ -14,14 +14,14 @@ exports.signup = async (req, res) => {
   let newUser = new User({ name, email, password, profile, username })
   await newUser.save()
 
-  res.ok('Signup success! Please signin')
+  res.ok('Signup success')
 }
 
 exports.signin = async (req, res) => {
   let { email, password } = req.body
   let user = await User.findOne({ email })
   if (!user) {
-    return res.fail('User with that email does not exist. Please signup')
+    return res.fail('User with that email does not exist')
   }
 
   if (!user.isAuthenticate(password)) {
@@ -34,7 +34,10 @@ exports.signin = async (req, res) => {
 
   {
     let { _id, username, name, email, role } = user
-    res.ok('Signin', { token, user: { _id, username, name, email, role } })
+    res.ok('Signin success', {
+      token,
+      user: { _id, username, name, email, role },
+    })
   }
 }
 

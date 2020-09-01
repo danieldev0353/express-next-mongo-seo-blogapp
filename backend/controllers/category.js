@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
   let category = new Category({ name, slug })
   let result = await category.save()
 
-  res.ok('Category saved', result)
+  res.ok('Created', result)
 }
 
 exports.list = async (req, res) => {
@@ -27,5 +27,5 @@ exports.remove = async (req, res) => {
   const slug = req.params.slug.toLowerCase()
   await Category.findOneAndRemove({ slug })
 
-  res.ok('Category deleted successfully')
+  res.ok('Removed')
 }

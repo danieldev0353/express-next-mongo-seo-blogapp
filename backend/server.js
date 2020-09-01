@@ -20,6 +20,7 @@ app.use('/api', require('./routes/blog'))
 app.use('/api', require('./routes/auth'))
 app.use('/api', require('./routes/user'))
 app.use('/api', require('./routes/category'))
+app.use('/api', require('./routes/tag'))
 
 //_________________________________________________________
 const port = process.env.PORT || 8000
