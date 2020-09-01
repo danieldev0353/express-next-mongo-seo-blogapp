@@ -14,7 +14,7 @@ const AdminIndex = () => {
             <div className='col-md-4'>
               <ul class='list-group'>
                 <li className='list-group-item'>
-                  <Link href='/admin/crud/category-tag'>
+                  <Link href='/admin/category-tag'>
                     <a>Create Category</a>
                   </Link>
                 </li>

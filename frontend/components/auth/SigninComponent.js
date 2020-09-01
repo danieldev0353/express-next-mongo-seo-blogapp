@@ -6,7 +6,7 @@ import { signin, isAuth } from '../../actions/auth'
 const SignupComponent = () => {
   const [values, setValues] = useState({
     email: 'tom@mail.com',
-    password: '123456789',
+    password: 'tom@mail.com',
     error: '',
     loading: false,
     message: '',
