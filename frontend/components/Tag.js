@@ -21,7 +21,7 @@ const Category = () => {
 
   const loadCategories = () => {
     axios
-      .get('/categories')
+      .get('/tags')
       .then(({ data }) => {
         setValues({ ...values, categories: data?.data })
       })
@@ -35,7 +35,7 @@ const Category = () => {
       return (
         <button
           onClick={() => deleteCategory(c.slug)}
-          title='Double click to delete'
+          title='Click to delete'
           key={i}
           className='btn btn-outline-primary mr-1 ml-1 mt-3'
         >
@@ -46,16 +46,14 @@ const Category = () => {
   }
 
   const deleteCategory = (slug) => {
-    let answer = window.confirm(
-      'Are you sure you want to delete this category?'
-    )
+    let answer = window.confirm('Are you sure you want to delete this tag?')
 
     if (!answer) {
       return
     }
 
     axios
-      .delete(`/category/${slug}`)
+      .delete(`/tag/${slug}`)
       .then(({ data }) => {
         setValues({
           ...values,
@@ -75,7 +73,7 @@ const Category = () => {
   const clickSubmit = (e) => {
     e.preventDefault()
     axios
-      .post('/category', { name })
+      .post('/tag', { name })
       .then(({ data }) => {
         setValues({
           ...values,
@@ -105,21 +103,21 @@ const Category = () => {
   }
 
   const showSuccess = () => {
-    return <p className='text-success'>Category is created</p>
+    return <p className='text-success'>Tag is created</p>
   }
 
   const showError = () => {
-    return <p className='text-danger'>Category exists</p>
+    return <p className='text-danger'>Tag exists</p>
   }
 
   const showRemoved = () => {
-    return <p className='text-danger'>Category is removed</p>
+    return <p className='text-danger'>Tag is removed</p>
   }
 
   const newCategoryFom = () => (
     <form onSubmit={clickSubmit}>
       <div className='form-group'>
-        <label className='text-muted'>Category</label>
+        <label className='text-muted'>Tags</label>
         <input
           type='text'
           className='form-control'
