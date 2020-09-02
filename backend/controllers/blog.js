@@ -3,10 +3,7 @@ const stripHtml = require('string-strip-html')
 const _ = require('lodash')
 const slugify = require('slugify')
 const fs = require('fs')
-
 const Blog = require('../models/blog')
-const Category = require('../models/category')
-const Tag = require('../models/tag')
 
 exports.create = async (req, res) => {
   const form = formidable({ multiples: true })
@@ -21,6 +18,7 @@ exports.create = async (req, res) => {
     blog.title = title
     blog.body = body
     blog.mdesc = stripHtml(blog.body.substring(0, 160)).result
+    blog.excerpt = blog.smartTrim(body, 320, ' ', ' ...')
     blog.slug = slugify(title).toLowerCase()
     blog.postedBy = req.user._id
 
