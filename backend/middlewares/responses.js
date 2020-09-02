@@ -6,9 +6,9 @@ module.exports = function (req, res, next) {
     })
   }
 
-  res.fail = function (message) {
+  res.fail = function (error) {
     res.status(400).json({
-      error: message,
+      error: error.message ? error.message : error,
     })
   }
 

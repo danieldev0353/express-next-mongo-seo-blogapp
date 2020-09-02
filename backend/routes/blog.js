@@ -1,7 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const { time } = require('../controllers/blog')
+const er = require('express-rescue')
+const { create } = require('../controllers/blog')
 
-router.get('/', time)
+//_________________________________________________________
+const { adminMiddleware } = require('../middlewares/auth')
+
+//_________________________________________________________
+router.post('/blog', adminMiddleware, er(create))
 
 module.exports = router

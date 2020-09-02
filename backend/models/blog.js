@@ -8,27 +8,26 @@ const blogSchema = new mongoose.Schema(
       min: 3,
       max: 160,
       required: true,
+      trim: true,
     },
     slug: {
       type: String,
       unique: true,
       index: true,
     },
+    mdesc: {
+      type: String,
+    },
     body: {
       type: {},
       required: true,
       min: 200,
       max: 2000000,
+      trim: true,
     },
     excerpt: {
       type: String,
       max: 1000,
-    },
-    mtitle: {
-      type: String,
-    },
-    mdesc: {
-      type: String,
     },
     photo: {
       data: Buffer,
