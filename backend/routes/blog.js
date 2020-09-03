@@ -8,6 +8,7 @@ const {
   read,
   remove,
   update,
+  photo,
 } = require('../controllers/blog')
 
 //_________________________________________________________
@@ -21,5 +22,6 @@ router.get('/blogs-categories-tags', er(listAll))
 router.get('/blog/:slug', er(read))
 router.delete('/blog/:slug', adminMiddleware, er(remove))
 router.put('/blog/:slug', adminMiddleware, er(update))
+router.get('/blog/photo/:slug', er(photo))
 
 module.exports = router

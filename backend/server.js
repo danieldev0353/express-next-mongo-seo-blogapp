@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const fileUpload = require('express-fileupload')
 require('dotenv').config()
 
 //_________________________________________________________
@@ -10,6 +11,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
+app.use(fileUpload())
 app.use(require('./middlewares/responses'))
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))

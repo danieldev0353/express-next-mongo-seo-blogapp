@@ -9,48 +9,35 @@ const Category = require('../models/category')
 const Tag = require('../models/tag')
 
 exports.create = async (req, res) => {
-  const form = formidable({ multiples: true })
+  const { title, body, categories, tags } = req.body
+  if (!title || !body || !categories || !tags) {
+    return res.fail('Not all fields are specified')
+  }
 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      return res.fail(err)
+  let blog = new Blog()
+  blog.title = title
+  blog.body = body
+  blog.mdesc = stripHtml(body).result.substring(0, 160)
+  blog.excerpt = blog.smartTrim(body, 320, ' ', ' ...')
+  blog.slug = slugify(title).toLowerCase()
+  blog.postedBy = req.user._id
+
+  if (req.files?.photo) {
+    if (req.files.photo.size > 10000000) {
+      res.fail('Image should be less then 1mb in size')
     }
 
-    const { title, body, categories, tags } = fields
-    if (!title || !body || !categories || !tags) {
-      return res.fail('Not all fields are specified')
-    }
+    blog.photo.data = req.files.photo.data
+    blog.photo.contentType = req.files.photo.mimetype
+  }
 
-    let blog = new Blog()
-    blog.title = title
-    blog.body = body
-    blog.mdesc = stripHtml(body).result.substring(0, 160)
-    blog.excerpt = blog.smartTrim(body, 320, ' ', ' ...')
-    blog.slug = slugify(title).toLowerCase()
-    blog.postedBy = req.user._id
+  let arrayOfCategories = categories && categories.split(',')
+  let arrayOfTags = tags && tags.split(',')
+  blog.tags.push(arrayOfTags)
+  blog.categories.push(arrayOfCategories)
 
-    if (files.photo) {
-      if (files.photo.size > 10000000) {
-        res.fail('Image should be less then 1mb in size')
-      }
-
-      blog.photo.data = fs.readFileSync(files.photo.path)
-      blog.photo.contentType = files.photo.type
-    }
-
-    let arrayOfCategories = categories && categories.split(',')
-    let arrayOfTags = tags && tags.split(',')
-    blog.tags.push(arrayOfTags)
-    blog.categories.push(arrayOfCategories)
-
-    blog.save((err, result) => {
-      if (err) {
-        return res.fail(err?.message)
-      }
-
-      res.ok('Saved', result)
-    })
-  })
+  let saved = await blog.save()
+  res.ok('Saved', saved)
 }
 
 exports.list = async (req, res) => {
@@ -99,7 +86,7 @@ exports.read = async (req, res) => {
     .populate('tags', '_id name slug')
     .populate('postedBy', '_id name username')
     .select(
-      '_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt'
+      '_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt -photo'
     )
 
   res.ok('Blog', blog)
@@ -120,9 +107,10 @@ exports.update = async (req, res) => {
   oldBlog.slug = slugBeforeMerge
 
   const { body, desc, categories, tags } = req.body
+
   if (body) {
-    blog.mdesc = stripHtml(body).result.substring(0, 160)
-    blog.excerpt = blog.smartTrim(body, 320, ' ', ' ...')
+    oldBlog.mdesc = stripHtml(body).result.substring(0, 160)
+    oldBlog.excerpt = oldBlog.smartTrim(body, 320, ' ', ' ...')
   }
 
   if (categories) {
@@ -133,22 +121,23 @@ exports.update = async (req, res) => {
     oldBlog.tags = tags.split(',')
   }
 
+  if (req.files?.photo) {
+    if (req.files.photo.size > 10000000) {
+      return res.fail('Image should be less then 1mb in size')
+    }
+
+    oldBlog.photo.data = req.files.photo.data
+    oldBlog.photo.contentType = req.files.photo.mimetype
+  }
+
   let saved = await oldBlog.save()
   res.ok('Saved', saved)
+}
 
-  // const form = formidable({ multiples: true })
-  // form.parse(req, (err, fields, files) => {
-  //   if (err) {
-  //     return res.fail(err)
-  //   }
-  // })
+exports.photo = async (req, res) => {
+  const slug = req.params.slug.toLowerCase()
+  let blog = await Blog.findOne({ slug }).select('photo')
 
-  // if (files.photo) {
-  //   if (files.photo.size > 10000000) {
-  //     return res.fail('Image should be less then 1mb in size')
-  //   }
-
-  //   oldBlog.photo.data = fs.readFileSync(files.photo.path)
-  //   oldBlog.photo.contentType = files.photo.type
-  // }
+  res.set('Content-Type', blog.photo.contentType)
+  return res.send(blog.photo.data)
 }
