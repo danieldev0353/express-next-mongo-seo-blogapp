@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
 
     const { title, body, categories, tags } = fields
     if (!title || !body || !categories || !tags) {
-      return res.fail('Error')
+      return res.fail('Not all fields are specified')
     }
 
     let blog = new Blog()

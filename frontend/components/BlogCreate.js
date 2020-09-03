@@ -91,6 +91,7 @@ const CreateBlog = () => {
             formData: new FormData(),
             checkedCategory: [],
             checkedTag: [],
+            success: `A new blog  is created`,
           }))
 
           setValues((prev) => ({
@@ -101,7 +102,10 @@ const CreateBlog = () => {
           }))
         }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err.response?.data?.error)
+        setValues({ ...values, error: err.response?.data?.error })
+      })
   }
 
   const handleChange = (name) => (e) => {
@@ -182,6 +186,24 @@ const CreateBlog = () => {
     )
   }
 
+  const showError = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: error ? '' : 'none' }}
+    >
+      {error}
+    </div>
+  )
+
+  const showSuccess = () => (
+    <div
+      className='alert alert-success'
+      style={{ display: success ? '' : 'none' }}
+    >
+      {success}
+    </div>
+  )
+
   const createBlogForm = () => {
     return (
       <form onSubmit={publishBlog}>
@@ -217,7 +239,13 @@ const CreateBlog = () => {
   return (
     <div className='container-fluid'>
       <div className='row'>
-        <div className='col-md-8'>{createBlogForm()}</div>
+        <div className='col-md-8'>
+          {createBlogForm()}
+          <div className='pt-3'>
+            {showError()}
+            {showSuccess()}
+          </div>
+        </div>
 
         <div className='col-md-4'>
           <div>
