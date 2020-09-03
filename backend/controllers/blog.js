@@ -45,3 +45,20 @@ exports.create = async (req, res) => {
     })
   })
 }
+
+exports.list = async (req, res) => {
+  let blogs = await Blog.find({})
+    .populate('categories', '_id name slug')
+    .populate('tags', '_id name slug')
+    .populate('postedBy', '_id name username')
+    .select(
+      '_id title slug excerpt categories tags postedBy createdAt updatedAt'
+    )
+
+  res.ok('Blogs', blogs)
+}
+
+exports.listAll = async (req, res) => {}
+exports.read = async (req, res) => {}
+exports.remove = async (req, res) => {}
+exports.update = async (req, res) => {}
