@@ -1,5 +1,6 @@
 import React from 'react'
 import '../static/App.css'
+import '../static/bootstrap.min.css'
 import '.././node_modules/nprogress/nprogress.css'
 import '.././node_modules/react-quill/dist/quill.snow.css'
 

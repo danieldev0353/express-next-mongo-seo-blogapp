@@ -18,7 +18,7 @@ router.post('/blog', adminMiddleware, er(create))
 router.get('/blogs', er(list))
 router.get('/blogs-categories-tags', er(listAll))
 
-router.get('/blog/:slug', adminMiddleware, er(read))
+router.get('/blog/:slug', er(read))
 router.delete('/blog/:slug', adminMiddleware, er(remove))
 router.put('/blog/:slug', adminMiddleware, er(update))
 
