@@ -14,10 +14,14 @@ exports.create = async (req, res) => {
     }
 
     const { title, body, categories, tags } = fields
+    if (!title || !body || !categories || !tags) {
+      return res.fail('Error')
+    }
+
     let blog = new Blog()
     blog.title = title
     blog.body = body
-    blog.mdesc = stripHtml(blog.body.substring(0, 160)).result
+    blog.mdesc = stripHtml(body).result.substring(0, 160)
     blog.excerpt = blog.smartTrim(body, 320, ' ', ' ...')
     blog.slug = slugify(title).toLowerCase()
     blog.postedBy = req.user._id
