@@ -7,6 +7,11 @@ import axios from '../../axios.config'
 import moment from 'moment'
 import renderHTML from 'react-render-html'
 
+import getConfig from 'next/config'
+const {
+  publicRuntimeConfig: { API },
+} = getConfig()
+
 const Blogs = ({ blogs, categories, tags, size }) => {
   const showAllBlogs = () => {
     return blogs.map((blog, i) => {
@@ -34,7 +39,14 @@ const Blogs = ({ blogs, categories, tags, size }) => {
             </section>
 
             <div className='row'>
-              <div className='col-md-4'>image</div>
+              <div className='col-md-4'>
+                <img
+                  className='img img-fluid'
+                  style={{ maxHeight: '150px', width: 'auto' }}
+                  src={`${API}/blog/photo/${blog.slug}`}
+                  alt={blog.title}
+                />
+              </div>
               <div className='col-md-8'>
                 <section>
                   <div className='pb-3'>{renderHTML(blog.excerpt)}</div>
