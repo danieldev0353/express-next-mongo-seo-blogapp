@@ -27,7 +27,10 @@ const Blogs = ({ blogs, categories, tags, size }) => {
               </p>
             </section>
             <section>
-              <p>blog categories and tags</p>
+              {showBlogCategories(blog)}
+              {showBlogTags(blog)}
+              <br />
+              <br />
             </section>
 
             <div className='row'>
@@ -48,6 +51,20 @@ const Blogs = ({ blogs, categories, tags, size }) => {
     })
   }
 
+  const showBlogCategories = (blog) =>
+    blog.categories.map((c, i) => (
+      <Link key={i} href={`/categories/${c.slug}`}>
+        <a className='btn btn-primary mr-1 ml-1 mt-3'>{c.name}</a>
+      </Link>
+    ))
+
+  const showBlogTags = (blog) =>
+    blog.tags.map((t, i) => (
+      <Link key={i} href={`/tags/${t.slug}`}>
+        <a className='btn btn-outline-primary mr-1 ml-1 mt-3'>{t.name}</a>
+      </Link>
+    ))
+
   return (
     <Layout>
       <main>
@@ -58,9 +75,6 @@ const Blogs = ({ blogs, categories, tags, size }) => {
                 Programming blogs and tutorials
               </h1>
             </div>
-            <section>
-              <p>show categories and tags</p>
-            </section>
           </header>
         </div>
         <div className='container-fluid'>
