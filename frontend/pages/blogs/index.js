@@ -77,6 +77,22 @@ const Blogs = ({ blogs, categories, tags, size }) => {
       </Link>
     ))
 
+  const showAllCategories = () => {
+    return categories.map((c, i) => (
+      <Link href={`/categories/${c.slug}`} key={i}>
+        <a className='btn btn-primary mr-1 ml-1 mt-3'>{c.name}</a>
+      </Link>
+    ))
+  }
+
+  const showAllTags = () => {
+    return tags.map((t, i) => (
+      <Link href={`/tags/${t.slug}`} key={i}>
+        <a className='btn btn-outline-primary mr-1 ml-1 mt-3'>{t.name}</a>
+      </Link>
+    ))
+  }
+
   return (
     <Layout>
       <main>
@@ -87,6 +103,15 @@ const Blogs = ({ blogs, categories, tags, size }) => {
                 Programming blogs and tutorials
               </h1>
             </div>
+            <section>
+              <div className='pb-5 text-center'>
+                <hr />
+                {showAllCategories()}
+                <br />
+                {showAllTags()}
+                <hr />
+              </div>
+            </section>
           </header>
         </div>
         <div className='container-fluid'>
