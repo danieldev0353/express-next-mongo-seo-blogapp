@@ -140,3 +140,18 @@ exports.photo = async (req, res) => {
   res.set('Content-Type', blog.photo.contentType)
   return res.send(blog.photo.data)
 }
+
+exports.listRelated = async (req, res) => {
+  let limit = req.body.limit ? parseInt(req.query.limit) : 3
+  const { _id, categories } = req.body.blog
+
+  let blogs = await Blog.find({
+    _id: { $ne: _id },
+    categories: { $in: categories },
+  })
+    .limit(limit)
+    .populate('postedBy', '_id name profile')
+    .select('title slug excerpt postedBy createdAt updatedAt')
+
+  res.ok('Related blogs', blogs)
+}
