@@ -3,3 +3,9 @@
 #nprogress .bar {
   height: 3px !important;
 }
+
+.featured-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
