@@ -254,7 +254,7 @@ export async function getServerSideProps(context) {
   let skip = 0
   let limit = 2
 
-  const {
+  let {
     data: { data },
   } = await axios.get(`/blogs-categories-tags?limit=${limit}&skip=${skip}`)
 

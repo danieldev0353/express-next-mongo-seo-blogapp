@@ -81,13 +81,12 @@ exports.listAll = async (req, res) => {
 
 exports.read = async (req, res) => {
   let slug = req.params.slug.toLowerCase()
+
   let blog = await Blog.findOne({ slug })
     .populate('categories', '_id name slug')
     .populate('tags', '_id name slug')
     .populate('postedBy', '_id name username')
-    .select(
-      '_id title body slug mtitle mdesc categories tags postedBy createdAt updatedAt -photo'
-    )
+    .select('-photo')
 
   res.ok('Blog', blog)
 }
