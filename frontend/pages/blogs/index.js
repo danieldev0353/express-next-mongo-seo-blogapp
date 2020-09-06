@@ -13,7 +13,51 @@ const {
   publicRuntimeConfig: { API, APP_NAME, DOMAIN },
 } = getConfig()
 
-const Blogs = ({ blogs, categories, tags, size, router }) => {
+const Blogs = ({
+  blogs,
+  categories,
+  tags,
+  totalBlogs,
+  blogsLimit,
+  blogSkip,
+  router,
+}) => {
+  const [loadedBlogs, setLoadedBlogs] = useState([])
+  const [limit, setLimit] = useState(blogsLimit)
+  const [skip, setSkip] = useState(0)
+  const [size, setSize] = useState(totalBlogs)
+
+  const loadMore = async () => {
+    let toSkip = skip + limit
+
+    try {
+      const {
+        data: { data },
+      } = await axios.get(`/blogs-categories-tags?limit=${limit}&skip=${skip}`)
+
+      setLoadedBlogs([...loadedBlogs, ...data.blogs])
+      setSize(data.blogs.length)
+      setSkip(toSkip)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const loadMoreButton = () => {
+    return (
+      size > 0 &&
+      size >= limit && (
+        <button
+          onClick={loadMore}
+          style={{ width: '300px' }}
+          className='btn btn-outline-primary btn-lg'
+        >
+          Load more
+        </button>
+      )
+    )
+  }
+
   const showAllBlogs = () => {
     return blogs.map((blog, i) => {
       return (
@@ -62,6 +106,54 @@ const Blogs = ({ blogs, categories, tags, size, router }) => {
         </article>
       )
     })
+  }
+
+  const showLoadedBlogs = () => {
+    return loadedBlogs.map((blog, i) => (
+      <article key={i}>
+        <div className='lead pb-4'>
+          <header>
+            <Link href={`/blogs/${blog.slug}`}>
+              <a>
+                <h2 className='pt-3 pb-3 font-weight-bold'>{blog.title}</h2>
+              </a>
+            </Link>
+          </header>
+          <section>
+            <p className='mark ml-1 pt-2 pb-2'>
+              Written by {blog.postedBy.name} | Published{' '}
+              {moment(blog.updatedAt).fromNow()}
+            </p>
+          </section>
+          <section>
+            {showBlogCategories(blog)}
+            {showBlogTags(blog)}
+            <br />
+            <br />
+          </section>
+
+          <div className='row'>
+            <div className='col-md-4'>
+              <img
+                className='img img-fluid'
+                style={{ maxHeight: '150px', width: 'auto' }}
+                src={`${API}/blog/photo/${blog.slug}`}
+                alt={blog.title}
+              />
+            </div>
+            <div className='col-md-8'>
+              <section>
+                <div className='pb-3'>{renderHTML(blog.excerpt)}</div>
+                <Link href={`/blogs/${blog.slug}`}>
+                  <a className='btn btn-primary pt-2'>Read more</a>
+                </Link>
+              </section>
+            </div>
+          </div>
+        </div>
+        <hr />
+      </article>
+    ))
   }
 
   const head = () => (
@@ -149,11 +241,9 @@ const Blogs = ({ blogs, categories, tags, size, router }) => {
               </section>
             </header>
           </div>
-          <div className='container-fluid'>
-            <div className='row'>
-              <div className='col-md-12'>{showAllBlogs()}</div>
-            </div>
-          </div>
+          <div className='container-fluid'>{showAllBlogs()}</div>
+          <div className='container-fluid'>{showLoadedBlogs()}</div>
+          <div className='text-center pt-5 pb-5'>{loadMoreButton()}</div>
         </main>
       </Layout>
     </>
@@ -161,16 +251,21 @@ const Blogs = ({ blogs, categories, tags, size, router }) => {
 }
 
 export async function getServerSideProps(context) {
+  let skip = 0
+  let limit = 2
+
   const {
     data: { data },
-  } = await axios.get('/blogs-categories-tags')
+  } = await axios.get(`/blogs-categories-tags?limit=${limit}&skip=${skip}`)
 
   return {
     props: {
       blogs: data.blogs,
       categories: data.categories,
       tags: data.tags,
-      size: data.blogs.length,
+      totalBlogs: data.blogs.length,
+      blogsLimit: limit,
+      blogSkip: skip,
     },
   }
 }
