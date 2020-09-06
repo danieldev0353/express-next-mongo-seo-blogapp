@@ -32,9 +32,11 @@ const Header = () => {
     <div>
       <Navbar color='light' light expand='md'>
         <Link href='/'>
-          <NavLink className='font-weight-bold'>
-            {publicRuntimeConfig.APP_NAME}
-          </NavLink>
+          <h4 style={{ position: 'relative', top: '5px' }}>
+            <NavLink className='font-weight-bold'>
+              {publicRuntimeConfig.APP_NAME}
+            </NavLink>
+          </h4>
         </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

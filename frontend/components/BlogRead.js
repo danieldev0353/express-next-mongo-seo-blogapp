@@ -1,5 +1,6 @@
 import axios from '../axios.config'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import moment from 'moment'
 
 const BlogRead = () => {
@@ -52,6 +53,10 @@ const BlogRead = () => {
           >
             Delete
           </button>
+          &nbsp;
+          <Link href={`/admin/blog/${blog.slug}`}>
+            <a className='btn btn-sm btn-warning'>Update</a>
+          </Link>
         </div>
       )
     })
