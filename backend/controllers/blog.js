@@ -142,8 +142,10 @@ exports.photo = async (req, res) => {
 }
 
 exports.listRelated = async (req, res) => {
-  let limit = req.body.limit ? parseInt(req.query.limit) : 3
-  const { _id, categories } = req.body.blog
+  console.log(req.body)
+
+  let limit = req.body.limit ? parseInt(req.body.limit) : 3
+  const { _id, categories } = req.body
 
   let blogs = await Blog.find({
     _id: { $ne: _id },

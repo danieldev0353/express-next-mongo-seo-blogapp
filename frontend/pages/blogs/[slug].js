@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import moment from 'moment'
 import getConfig from 'next/config'
 import renderHTML from 'react-render-html'
 import { withRouter } from 'next/router'
 
+import BlogRelated from '../../components/BlogRelated'
 import Layout from '../../components/Layout'
 import axios from '../../axios.config'
 const {
@@ -13,6 +14,19 @@ const {
 } = getConfig()
 
 const SingleBlog = ({ blog, router }) => {
+  const [related, setRelated] = useState([])
+
+  useEffect(() => {
+    axios
+      .post('/blogs/related', blog)
+      .then(({ data }) => {
+        setRelated(data.data)
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+  }, [])
+
   const head = () => (
     <Head>
       <title>
@@ -51,6 +65,16 @@ const SingleBlog = ({ blog, router }) => {
         <a className='btn btn-outline-primary mr-1 ml-1 mt-3'>{t.name}</a>
       </Link>
     ))
+
+  const showRelatedBlog = () => {
+    return related.map((blog, i) => (
+      <div className='col-md-4' key={i}>
+        <article>
+          <BlogRelated blog={blog} />
+        </article>
+      </div>
+    ))
+  }
 
   return (
     <>
@@ -95,8 +119,7 @@ const SingleBlog = ({ blog, router }) => {
 
             <div className='container'>
               <h4 className='text-center pt-5 pb-5 h2'>Related blogs</h4>
-              <hr />
-              <p>show related blogs</p>
+              <div className='row'>{showRelatedBlog()}</div>
             </div>
 
             <div className='container pb-5'>
