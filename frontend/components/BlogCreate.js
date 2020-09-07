@@ -50,6 +50,24 @@ const CreateBlog = () => {
     initTags()
   }, [])
 
+  const findOutCategory = (c) => {
+    const result = checkedCategory.indexOf(c)
+    if (result !== -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const findOutTag = (t) => {
+    const result = checkedTag.indexOf(t)
+    if (result !== -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const initCategories = () => {
     axios
       .get('/categories')
@@ -161,6 +179,7 @@ const CreateBlog = () => {
             }}
             type='checkbox'
             className='mr-2'
+            checked={findOutCategory(c._id)}
           />
           <label className='form-check-label'>{c.name}!!!</label>
         </li>
@@ -179,6 +198,7 @@ const CreateBlog = () => {
             }}
             type='checkbox'
             className='mr-2'
+            checked={findOutTag(t._id)}
           />
           <label className='form-check-label'>{t.name}</label>
         </li>
