@@ -1,4 +1,5 @@
 const Category = require('../models/category')
+const Blog = require('../models/blog')
 const slugify = require('slugify')
 
 exports.create = async (req, res) => {
@@ -20,7 +21,15 @@ exports.read = async (req, res) => {
   let slug = req.params.slug.toLowerCase()
   let category = await Category.findOne({ slug })
 
-  res.ok('Category', category)
+  let blogs = await Blog.find({ categories: category._id })
+    .populate('categories', '_id name slug')
+    .populate('tags', '_id name slug')
+    .populate('postedBy', '_id name')
+    .select(
+      '_id title slug excerpt categories postedBy tags createdAt updatedAt'
+    )
+
+  res.ok('Category', { category: category, blogs: blogs })
 }
 
 exports.remove = async (req, res) => {

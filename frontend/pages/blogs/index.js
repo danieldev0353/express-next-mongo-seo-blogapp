@@ -235,8 +235,8 @@ const Blogs = ({
                   <hr />
                   {showAllCategories()}
                   <br />
-                  {showAllTags()}
-                  <hr />
+                  {/* {showAllTags()}
+                  <hr /> */}
                 </div>
               </section>
             </header>

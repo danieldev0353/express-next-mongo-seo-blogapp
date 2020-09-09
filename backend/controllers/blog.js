@@ -31,10 +31,15 @@ exports.create = async (req, res) => {
     blog.photo.contentType = req.files.photo.mimetype
   }
 
-  let arrayOfCategories = categories && categories.split(',')
-  let arrayOfTags = tags && tags.split(',')
-  blog.tags.push(arrayOfTags)
-  blog.categories.push(arrayOfCategories)
+  if (categories) {
+    let arrayOfCategories = categories.split(',')
+    blog.categories = blog.categories.concat(arrayOfCategories)
+  }
+
+  if (tags) {
+    let arrayOfTags = tags.split(',')
+    blog.tags = blog.tags.concat(arrayOfTags)
+  }
 
   let saved = await blog.save()
   res.ok('Saved', saved)
