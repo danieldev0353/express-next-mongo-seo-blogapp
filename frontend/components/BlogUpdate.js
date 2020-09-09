@@ -6,6 +6,12 @@ import { getCookie } from '../actions/auth'
 import axios from '../axios.config'
 import { modules, formats } from '../actions/createBlog'
 import { withRouter } from 'next/router'
+import Router from 'next/router'
+import getConfig from 'next/config'
+
+const {
+  publicRuntimeConfig: { API, APP_NAME, DOMAIN },
+} = getConfig()
 
 const BlogUpdate = ({ router }) => {
   const [body, setBody] = useState('')
@@ -109,8 +115,45 @@ const BlogUpdate = ({ router }) => {
     setValues({ ...values, formData, body: e })
   }
 
-  const editBlog = () => {
-    console.log('update blog')
+  const showError = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: error ? '' : 'none' }}
+    >
+      {error}
+    </div>
+  )
+
+  const showSuccess = () => (
+    <div
+      className='alert alert-success'
+      style={{ display: success ? '' : 'none' }}
+    >
+      {success}
+    </div>
+  )
+
+  const editBlog = (e) => {
+    e.preventDefault()
+
+    axios
+      .put(`/blog/${router.query.slug}`, formData)
+      .then(({ data }) => {
+        setValues({
+          ...values,
+          title: '',
+          success: `Blog titled is successfully updated`,
+        })
+
+        router.push(`/blogs/${router.query.slug}`)
+      })
+      .catch((err) => {
+        console.log(err)
+        setValues({
+          ...values,
+          error: err.response?.data?.error,
+        })
+      })
   }
 
   const handleToggle = (c) => () => {
@@ -215,8 +258,16 @@ const BlogUpdate = ({ router }) => {
         <div className='col-md-8'>
           {updateBlogForm()}
           <div className='pt-3'>
-            <p>show success and error msg 2</p>
+            {showSuccess()}
+            {showError()}
           </div>
+          {body && (
+            <img
+              src={`${API}/blog/photo/${router.query.slug}`}
+              alt={title}
+              style={{ width: '100%' }}
+            />
+          )}
         </div>
 
         <div className='col-md-4'>
