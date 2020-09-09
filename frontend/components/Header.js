@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Router from 'next/router'
 import { signout, isAuth } from '../actions/auth'
+import Search from './Search'
 import {
   Collapse,
   Navbar,
@@ -84,6 +85,7 @@ const Header = () => {
           </Nav>
         </Collapse>
       </Navbar>
+      <Search />
     </div>
   )
 }
