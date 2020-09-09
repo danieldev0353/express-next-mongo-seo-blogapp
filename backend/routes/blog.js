@@ -26,6 +26,6 @@ router.delete('/blog/:slug', adminMiddleware, er(remove))
 router.put('/blog/:slug', adminMiddleware, er(update))
 router.get('/blog/photo/:slug', er(photo))
 router.post('/blogs/related', er(listRelated))
-router.get('/blogs/search', listSearch)
+router.get('/blogs/search', er(listSearch))
 
 module.exports = router
