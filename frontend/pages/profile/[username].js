@@ -14,6 +14,14 @@ const {
 const UserProfile = ({ user, blogs }) => {
   useEffect(() => {}, [])
 
+  const head = () => (
+    <Head>
+      <title>
+        {user.username} | {APP_NAME}
+      </title>
+    </Head>
+  )
+
   const showUserBlogs = () => {
     return blogs?.map((blog, i) => {
       return (
@@ -28,6 +36,7 @@ const UserProfile = ({ user, blogs }) => {
 
   return (
     <>
+      {head()}
       <Layout>
         <div className='container'>
           <div className='row'>
@@ -35,11 +44,9 @@ const UserProfile = ({ user, blogs }) => {
               <div className='card'>
                 <div className='card-body'>
                   <h5>{user.name}</h5>
-                  <Link href={`${user.profile}`}>
-                    <a>View Profile</a>
-                  </Link>
                   <p className='text-muted'>
                     Joined {moment(user.createdAt).fromNow()}
+                    {typeof blogs}
                   </p>
                 </div>
               </div>
@@ -85,9 +92,10 @@ export async function getServerSideProps({ query }) {
   try {
     let username = query.username
     let result = await axios.get(`/user/${username}`)
-    let user = result.data
-    let blogs = result.blogs
-    return { props: { user } }
+    let user = result.data.user
+    let blogs = result.data.blogs
+    console.log(blogs)
+    return { props: { user, blogs } }
   } catch (error) {
     console.log(error)
     return { props: {} }

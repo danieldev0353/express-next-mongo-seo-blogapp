@@ -98,13 +98,18 @@ const SingleBlog = ({ blog, router }) => {
                     {blog.title}
                   </h1>
                   <p className='lead mt-3 mark'>
-                    Written by {blog.postedBy.name} | Published{' '}
+                    <Link
+                      as={`/profile/${blog.postedBy.username}`}
+                      href={`/profile/${blog.postedBy.username}`}
+                    >
+                      <a>Written by {blog.postedBy.name}</a>
+                    </Link>
                     {moment(blog.updatedAt).fromNow()}
                   </p>
 
                   <div className='pb-3'>
                     {showBlogCategories(blog)}
-                    {showBlogTags(blog)}
+                    {/* {showBlogTags(blog)} */}
                     <br />
                     <br />
                   </div>
