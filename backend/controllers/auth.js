@@ -51,7 +51,7 @@ exports.forgotPassword = async (req, res) => {
   let { email } = req.body
   let user = await User.findOne({ email })
   if (!user) {
-    res.fail('User not found')
+    return res.fail('User not found')
   }
 
   let token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {

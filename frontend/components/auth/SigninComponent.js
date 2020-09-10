@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from '../../axios.config'
 import Router from 'next/router'
 import { signin, isAuth } from '../../actions/auth'
+import Link from 'next/link'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -85,6 +86,10 @@ const SignupComponent = () => {
       {message && showMessage()}
       {error && showError()}
       {showForm && signupForm()}
+      <br />
+      <Link href='/auth/forgot'>
+        <a className='btn btn-outline-danger btn-sm'>Forgot password</a>
+      </Link>
     </>
   )
 }
