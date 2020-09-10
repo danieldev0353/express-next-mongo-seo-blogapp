@@ -28,13 +28,11 @@ const ForgotPassword = () => {
       .then(({ data }) => {
         setError('')
         setMessage(data.message)
+        setValues({ ...values, showForm: false })
       })
       .catch((error) => {
         setError(error.response?.data?.error)
         console.log(error.response?.data?.error)
-      })
-      .finally(() => {
-        setValues({ ...values, message: '', error: '', disabled: false })
       })
   }
 

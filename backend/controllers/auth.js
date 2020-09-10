@@ -57,7 +57,7 @@ exports.forgotPassword = async (req, res) => {
   let token = jwt.sign({ _id: user._id }, process.env.JWT_RESET_PASSWORD, {
     expiresIn: '30m',
   })
-  let link = `${process.env.CLIENT_URL}/auth/password/reset/${token}`
+  let link = `${process.env.CLIENT_URL}/auth/reset/${token}`
 
   let mailOptions = {
     from: process.env.EMAIL_FROM,
