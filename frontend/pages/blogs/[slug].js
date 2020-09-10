@@ -98,12 +98,13 @@ const SingleBlog = ({ blog, router }) => {
                     {blog.title}
                   </h1>
                   <p className='lead mt-3 mark'>
+                    Written by{' '}
                     <Link
                       as={`/profile/${blog.postedBy.username}`}
                       href={`/profile/${blog.postedBy.username}`}
                     >
-                      <a>Written by {blog.postedBy.name}</a>
-                    </Link>
+                      <a>{blog.postedBy.name}</a>
+                    </Link>{' '}
                     {moment(blog.updatedAt).fromNow()}
                   </p>
 
@@ -127,9 +128,7 @@ const SingleBlog = ({ blog, router }) => {
               <div className='row'>{showRelatedBlog()}</div>
             </div>
 
-            <div className='container pb-5'>
-              <p>show comments</p>
-            </div>
+            <div className='container pb-5'></div>
           </article>
         </main>
       </Layout>

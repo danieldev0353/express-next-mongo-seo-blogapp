@@ -42,13 +42,13 @@ const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='ml-auto' navbar>
-            {auth?.role == 0 && (
+            {/* {auth?.role == 0 && (
               <NavItem>
                 <Link href='/user'>
                   <NavLink>{`${auth.name}'s Dashboard`}</NavLink>
                 </Link>
               </NavItem>
-            )}
+            )} */}
 
             {auth?.role == 1 && (
               <NavItem>

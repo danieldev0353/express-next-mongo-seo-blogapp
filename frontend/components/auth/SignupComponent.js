@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import axios from '../../axios.config'
-import Router from 'next/router'
 import { isAuth } from '../../actions/auth'
+import Router from 'next/router'
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
     name: '',
-    email: 'tom@mail.com',
-    password: '123456789',
+    email: '',
+    password: '',
     error: '',
     loading: false,
     message: '',
@@ -38,6 +38,10 @@ const SignupComponent = () => {
           message: data.message,
           showForm: false,
         })
+
+        setTimeout(() => {
+          Router.push(`/signin`)
+        }, 100)
       })
       .catch((e) => {
         console.log(e)

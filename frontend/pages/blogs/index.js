@@ -33,7 +33,9 @@ const Blogs = ({
     try {
       const {
         data: { data },
-      } = await axios.get(`/blogs-categories-tags?limit=${limit}&skip=${skip}`)
+      } = await axios.get(
+        `/blogs-categories-tags?limit=${limit}&skip=${toSkip}`
+      )
 
       setLoadedBlogs([...loadedBlogs, ...data.blogs])
       setSize(data.blogs.length)
@@ -72,8 +74,9 @@ const Blogs = ({
             </header>
             <section>
               <p className='mark ml-1 pt-2 pb-2'>
+                Written by{' '}
                 <Link href={`/profile/${blog.postedBy.username}`}>
-                  <a>Written by {blog.postedBy.name}</a>
+                  <a>{blog.postedBy.name}</a>
                 </Link>
                 | Published {moment(blog.updatedAt).fromNow()}
               </p>
@@ -123,8 +126,11 @@ const Blogs = ({
           </header>
           <section>
             <p className='mark ml-1 pt-2 pb-2'>
-              Written by {blog.postedBy.name} | Published{' '}
-              {moment(blog.updatedAt).fromNow()}
+              Written by{' '}
+              <Link href={`/profile/${blog.postedBy.username}`}>
+                <a>{blog.postedBy.name}</a>
+              </Link>
+              | Published {moment(blog.updatedAt).fromNow()}
             </p>
           </section>
           <section>

@@ -58,26 +58,14 @@ const UserProfile = ({ user, blogs }) => {
 
         <div className='container pb-5'>
           <div className='row'>
-            <div className='col-md-6'>
+            <div className='col-md-12'>
               <div className='card'>
                 <div className='card-body'>
                   <h5 className='card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-white'>
                     Recent blogs by {user.name}
                   </h5>
 
-                  {showUserBlogs()}
-                </div>
-              </div>
-            </div>
-
-            <div className='col-md-6'>
-              <div className='card'>
-                <div className='card-body'>
-                  <h5 className='card-title bg-primary pt-4 pb-4 pl-4 pr-4 text-light'>
-                    Message {user.name}
-                  </h5>
-                  <br />
-                  <p>contact form</p>
+                  <div className='text-center'>{showUserBlogs()}</div>
                 </div>
               </div>
             </div>

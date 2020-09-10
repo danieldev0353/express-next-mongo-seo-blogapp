@@ -35,7 +35,7 @@ const AdminIndex = () => {
                 </li>
               </ul>
             </div>
-            <div className='col-md-8'>right</div>
+            <div className='col-md-8'></div>
           </div>
         </div>
       </Admin>

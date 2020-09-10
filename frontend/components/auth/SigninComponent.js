@@ -73,9 +73,12 @@ const SignupComponent = () => {
       </div>
 
       <div>
-        <button disabled={loading} className='btn btn-primary'>
+        <button disabled={loading} className='btn btn-primary mr-4'>
           Signin
         </button>
+        <Link href='/signup'>
+          <a>Signup</a>
+        </Link>
       </div>
     </form>
   )
