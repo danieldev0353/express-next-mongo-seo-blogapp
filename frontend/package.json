@@ -4,6 +4,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": ">=14.4" 
+  },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.20.0",
