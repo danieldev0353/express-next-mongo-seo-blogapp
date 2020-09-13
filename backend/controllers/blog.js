@@ -22,7 +22,7 @@ exports.create = async (req, res) => {
   blog.slug = slugify(title).toLowerCase()
   blog.postedBy = req.user._id
 
-  if (req.files?.photo) {
+  if (req.files && req.files.photo) {
     if (req.files.photo.size > 10000000) {
       res.fail('Image should be less then 1mb in size')
     }
@@ -125,7 +125,7 @@ exports.update = async (req, res) => {
     oldBlog.tags = tags.split(',')
   }
 
-  if (req.files?.photo) {
+  if (req.files && req.files.photo) {
     if (req.files.photo.size > 10000000) {
       return res.fail('Image should be less then 1mb in size')
     }

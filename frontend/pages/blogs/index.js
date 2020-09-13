@@ -262,6 +262,7 @@ export async function getServerSideProps(context) {
   let skip = 0
   let limit = 2
 
+try {
   let {
     data: { data },
   } = await axios.get(`/blogs-categories-tags?limit=${limit}&skip=${skip}`)
@@ -276,6 +277,20 @@ export async function getServerSideProps(context) {
       blogSkip: skip,
     },
   }
+ } catch (err) {
+	  return {
+		props: {
+		  blogs: [],
+		  categories: [],
+		  tags: [],
+		  totalBlogs: 0,
+		  blogsLimit: limit,
+		  blogSkip: skip,
+		},
+    }
+ }
+		
+ 
 }
 
 export default withRouter(Blogs)
